@@ -11,28 +11,22 @@ import matplotlib.pyplot as plt
 
 ############ START STUDENT CODE ############
 
-# TODO: Copy from Q2b
-x = 
+x = torch.linspace(-math.pi, math.pi, 2000)
+y = torch.sin(x)
 
-# TODO: Copy from Q2b
-y = 
-
-# TODO: Randomly initialize the weights using torch.randn. Don't pass a dtype. Set requires_grad=True. 
 # Read docs here: https://pytorch.org/docs/stable/generated/torch.randn.html
-a = torch.
-b = 
-c = 
-d = 
+a = torch.randn((), requires_grad=True)
+b = torch.randn((), requires_grad=True)
+c = torch.randn((), requires_grad=True)
+d = torch.randn((), requires_grad=True)
 
 learning_rate = 1e-6 # Do not change
 
 # Run 2000 iterations of gradient descent 
 for t in range(2000):
-    # TODO: Copy from Q3a
-    y_pred = 
+    y_pred = a * x ** 3 + b * x ** 2 + c * x + d
+    loss = (y_pred - y).pow(2).sum()
 
-    # TODO: Copy from Q3a
-    loss = 
     if t % 100 == 99:
         print(f"Iteration {t} loss: {loss}") # Print loss every 100 iterations
 
@@ -40,15 +34,15 @@ for t in range(2000):
     loss.backward()
 
     with torch.no_grad():
-        # TODO: Copy from Q3a
-        a -= 
-        b -= 
-        c -= 
-        d -= 
+        a -= learning_rate * a.grad
+        b -= learning_rate * b.grad
+        c -= learning_rate * c.grad
+        d -= learning_rate * d.grad
 
-        # TODO: Zero all gradients after updating to prevent them from accumulating over iterations
         a.grad.zero_()
-        #...
+        b.grad.zero_()
+        c.grad.zero_()
+        d.grad.zero_()
 
 print(f'Result: y = {a.item()} x^3 + {b.item()} x^2 + {c.item()} x + {d.item()}')
 

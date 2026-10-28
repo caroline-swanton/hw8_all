@@ -9,14 +9,12 @@ import matplotlib
 matplotlib.use("Agg") # This setting is necessary for running on remote machines
 import matplotlib.pyplot as plt
 
-# TODO: Copy from Q2b
-x = 
-y = 
+x = torch.linspace(-math.pi, math.pi, 2000)
+y = torch.sin(x)
 
-# TODO: Define the model according to the instructions in the handout. 
 model = torch.nn.Sequential(
-    ...
-)
+    torch.nn.Linear(1, 64), torch.nn.ReLU(), torch.nn.Linear(64, 64),
+    torch.nn.ReLU(), torch.nn.Linear(64, 1))
 
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-3) # This is the optimizer PyTorch will use to update the model's parameters
 
@@ -24,19 +22,17 @@ num_epochs = 5000
 
 loss_history = [] # Define a list to store the loss values over iterations
 
-# TODO: Define the loss function using PyTorch's MSE Loss
 # Docs: https://pytorch.org/docs/stable/generated/torch.nn.MSELoss.html
-loss_fn = ...
+loss_fn = torch.nn.MSELoss()
 
 for epoch in range(num_epochs):
     y_pred = model(x.unsqueeze(1)).squeeze()
 
-    # TODO: Compute the loss using torch.nn.MSELoss()
     # torch.nn.MSELoss() takes in two arguments: the network's prediction and the target value
     # Example: torch.nn.MSELoss(torch.tensor(1), torch.tensor(2)) = 1
     # Hint: Recall that you don't have to convert the prediction and target to tensors because they are already tensors. 
     
-    loss = ...
+    loss = loss_fn(y_pred, y)
 
     if epoch % 100 == 99:
         print(f"Iteration {epoch} loss: {loss.item()}")
